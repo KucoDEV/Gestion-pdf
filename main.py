@@ -38,7 +38,7 @@ class PDFManagerApp:
 
     def create_widgets(self):
         # Labels pour l'affichage du nombre de PDF par matière
-        tk.Label(self.master, text="Nombre de PDF par matière", font=("Arial", 12)).pack(pady=10)
+        tk.Label(self.master, text="Nombre de PDF par matière:", font=("Arial", 12)).pack(pady=10)
 
         for matiere in self.matiere_paths:
             tk.Label(self.master, text=f"{matiere}: {self.count_pdfs_in_matiere(matiere)} PDF", font=("Arial", 10)).pack()
@@ -48,13 +48,13 @@ class PDFManagerApp:
         matiere_menu = tk.OptionMenu(self.master, self.selected_matiere, *matieres)
         matiere_menu.pack(pady=10)
 
-        # Bouton pour voir les PDF de la matière sélectionnée
-        view_pdf_button = tk.Button(self.master, text="Voir les PDF de la matière", command=self.view_pdfs, font=("Arial", 12))
-        view_pdf_button.pack(pady=10)
-
         # Bouton pour ajouter un PDF à la matière sélectionnée
         add_pdf_button = tk.Button(self.master, text="Ajouter un PDF à la matière", command=self.add_pdf, font=("Arial", 12))
         add_pdf_button.pack(pady=10)
+
+        # Bouton pour voir les PDF de la matière sélectionnée
+        view_pdf_button = tk.Button(self.master, text="Voir les PDF de la matière", command=self.view_pdfs, font=("Arial", 12))
+        view_pdf_button.pack(pady=10)
 
     def count_pdfs_in_matiere(self, matiere):
         matiere_path = self.matiere_paths[matiere]
@@ -65,18 +65,52 @@ class PDFManagerApp:
             widget.destroy()
 
         self.create_widgets()
+    
+    def delete_pdf(self, matiere, pdf_name):
+        matiere_path = self.matiere_paths[matiere]
+        pdf_path = os.path.join(matiere_path, pdf_name)
+
+        # Vérifier si le PDF existe dans la matière
+        if os.path.exists(pdf_path):
+            os.remove(pdf_path)
+            messagebox.showinfo("PDF supprimé", f"Le PDF '{pdf_name}' a été supprimé de la matière {matiere}.")
+            self.count_pdfs_in_matiere(matiere)
+            self.update_pdf_count_label()
+        else:
+            messagebox.showwarning("Fichier non trouvé", f"Le PDF '{pdf_name}' n'existe pas dans cette matière.")
+
 
     def view_pdfs(self):
         matiere = self.selected_matiere.get()
         matiere_path = os.path.abspath(self.matiere_paths[matiere])
 
-        # Ouvrir le dossier dans l'explorateur de fichiers
-        if platform.system() == "Windows":
-            os.startfile(matiere_path)
-        elif platform.system() == "Darwin":
-            os.system("open " + matiere_path)
-        else:
-            os.system("xdg-open " + matiere_path)
+        pdf_files = [f for f in os.listdir(matiere_path) if f.lower().endswith('.pdf')]
+
+        # Vérifier s'il y a des PDF
+        if not pdf_files:
+            messagebox.showwarning("Aucun PDF", f"Aucun PDF n'a été trouvé dans la matière {matiere}.")
+            return
+    
+        # Créer une nouvelle fenêtre pour afficher les PDF
+        pdf_window = tk.Toplevel(self.master)
+        pdf_window.title(f"Liste des PDF de {matiere}")
+        pdf_window.geometry("500x350")
+
+        # Créer un tableau pour afficher les noms des PDF et des boutons "Supprimer"
+        pdf_table = tk.Label(pdf_window, text="Liste des PDF", font=("Arial", 12))
+        pdf_table.pack(pady=10)
+
+        for pdf in pdf_files:
+            pdf_frame = tk.Frame(pdf_window)
+            pdf_frame.pack()
+            pdf_label = tk.Label(pdf_frame, text=pdf, font=("Arial", 10))
+            pdf_label.pack(side=tk.LEFT)
+            pdf_delete_button = tk.Button(pdf_frame, text="Supprimer", command=lambda pdf_name=pdf: self.delete_pdf(matiere, pdf_name))
+            pdf_delete_button.pack(side=tk.LEFT)
+
+        pdf_window.mainloop()
+
+
 
     def add_pdf(self):
         matiere = self.selected_matiere.get()
