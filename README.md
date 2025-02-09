@@ -1,33 +1,33 @@
-# 📂 Gestionnaire de PDF
+# 📂 PDF Manager
 
 ## 📜 Description
 
-**Gestionnaire de PDF** est une application développée en Python avec Tkinter qui permet de gérer des fichiers PDF en les classant par matière. Il permet d'ajouter, supprimer et visualiser les fichiers PDF dans différentes catégories.
+**PDF Manager** is an application developed in Python with Tkinter that allows users to manage PDF files by sorting them by subject. It enables adding, deleting, and viewing PDF files in different categories.
 
-## ⚡ Fonctionnalités
+## ⚡ Features
 
-- Interface graphique interactive avec Tkinter.
-- Classement des fichiers PDF par matière.
-- Ajout et suppression de fichiers PDF.
-- Affichage du nombre de PDF par catégorie.
+- Interactive graphical interface with Tkinter.
+- Sorting of PDF files by subject.
+- Adding and deleting PDF files.
+- Display of the number of PDFs per category.
 
-## 🛠️ Prérequis
+## 🛠️ Prerequisites
 
-Assurez-vous d'avoir Python installé sur votre machine.
+Make sure you have Python installed on your machine.
 
-## 🚀 Installation et exécution
+## 🚀 Installation and Execution
 
-1. Clonez ce repository ou téléchargez le fichier `main.py`.
-2. Exécutez le script avec la commande :
+1. Clone this repository or download the `main.py` file.
+2. Run the script with the command:
    ```
    python main.py
    ```
-3. Ajoutez et gérez vos fichiers PDF selon vos besoins.
+3. Add and manage your PDF files as needed.
 
-## ⚠️ État du projet
+## ⚠️ Project Status
 
-Ce projet n'a pas été entretenu depuis plus de 2 ans. Son fonctionnement actuel n'est pas garanti.
+This project has not been maintained for over 2 years. Its current functionality is not guaranteed.
 
-## 📜 Licence
+## 📜 License
 
-Ce projet est sous licence MIT. Vous êtes libre de le modifier et de le redistribuer.
+This project is licensed under the MIT license. You are free to modify and redistribute it.
